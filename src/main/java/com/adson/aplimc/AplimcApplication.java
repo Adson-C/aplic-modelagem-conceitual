@@ -13,6 +13,7 @@ import com.adson.aplimc.domain.Cidade;
 import com.adson.aplimc.domain.Cliente;
 import com.adson.aplimc.domain.Endereco;
 import com.adson.aplimc.domain.Estado;
+import com.adson.aplimc.domain.ItemPedido;
 import com.adson.aplimc.domain.Pagamento;
 import com.adson.aplimc.domain.PagamentoComBoleto;
 import com.adson.aplimc.domain.PagamentoComCartao;
@@ -25,6 +26,7 @@ import com.adson.aplimc.repositories.CidadeRepository;
 import com.adson.aplimc.repositories.ClienteRepository;
 import com.adson.aplimc.repositories.EnderecoRepository;
 import com.adson.aplimc.repositories.EstadoRepository;
+import com.adson.aplimc.repositories.ItemPedidoRepository;
 import com.adson.aplimc.repositories.PagamentoRepository;
 import com.adson.aplimc.repositories.PedidoRepository;
 import com.adson.aplimc.repositories.ProdutoRepository;
@@ -54,6 +56,9 @@ public class AplimcApplication implements CommandLineRunner {
 	
 	@Autowired
 	private PagamentoRepository pagamentoRepository;
+	
+	@Autowired
+	private ItemPedidoRepository itemPedidoRepository;
 
 	public static void main(String[] args) {
 		SpringApplication.run(AplimcApplication.class, args);
@@ -118,6 +123,19 @@ public class AplimcApplication implements CommandLineRunner {
 		
 		pedidoRepository.saveAll(Arrays.asList(ped1, ped2));
 		pagamentoRepository.saveAll(Arrays.asList(pagto1, pagto2));
+		
+		ItemPedido ip1 = new ItemPedido(ped1, p1, 0.00, 1, 2000.00);
+		ItemPedido ip2 = new ItemPedido(ped1, p3, 0.00, 2, 80.00);
+		ItemPedido ip3 = new ItemPedido(ped2, p2, 100.00, 1, 800.00);
+		
+		ped1.getItens().addAll(Arrays.asList(ip1, ip2));
+		ped2.getItens().addAll(Arrays.asList(ip3));
+		
+		p1.getItens().addAll(Arrays.asList(ip1));
+		p2.getItens().addAll(Arrays.asList(ip3));
+		p3.getItens().addAll(Arrays.asList(ip2));
+		
+		itemPedidoRepository.saveAll(Arrays.asList(ip1, ip2, ip3));
 
 	}
 
