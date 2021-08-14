@@ -2,12 +2,13 @@ package com.adson.aplimc.services;
 
 import java.util.Optional;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import com.adson.aplimc.domain.Categoria;
 import com.adson.aplimc.repositories.CategoriaRepository;
+import com.adson.aplimc.services.exceptions.DateIntegrityException;
 import com.adson.aplimc.services.exceptions.ObjectNotFoundException;
 
 @Service
@@ -30,6 +31,15 @@ public class CategoriaService {
 	public Categoria upadate(Categoria obj) {
 		find(obj.getId());
 		return repo.save(obj);
+	}
+	
+	public void delete(Integer id) {
+		find(id);
+		try {
+			repo.deleteById(id);			
+		} catch (DataIntegrityViolationException e) {
+			throw new DateIntegrityException("Não é possivél excluir uma categoria que possui produtos");
+		}
 	}
 
 }
