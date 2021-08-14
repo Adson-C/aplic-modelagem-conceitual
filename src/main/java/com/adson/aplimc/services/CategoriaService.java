@@ -10,6 +10,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import com.adson.aplimc.domain.Categoria;
+import com.adson.aplimc.dto.CategoriaDTO;
 import com.adson.aplimc.repositories.CategoriaRepository;
 import com.adson.aplimc.services.exceptions.DateIntegrityException;
 import com.adson.aplimc.services.exceptions.ObjectNotFoundException;
@@ -54,4 +55,8 @@ public class CategoriaService {
 		return repo.findAll(pageRequest);
 	}
 
+	public Categoria fromDTO(CategoriaDTO objDto) {
+		return new Categoria(objDto.getId(), objDto.getNome());
+	}
+	
 }
