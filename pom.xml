@@ -12,6 +12,8 @@
 	<groupId>com.adson</groupId>
 	<artifactId>aplimc</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
+	<packaging>jar</packaging>
+	
 	<name>aplimc</name>
 	<description>aplimc  Spring Boot com MongoDB</description>
 	<properties>
