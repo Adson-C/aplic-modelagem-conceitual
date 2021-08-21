@@ -14,11 +14,14 @@ import org.springframework.transaction.annotation.Transactional;
 import com.adson.aplimc.domain.Cidade;
 import com.adson.aplimc.domain.Cliente;
 import com.adson.aplimc.domain.Endereco;
+import com.adson.aplimc.domain.enums.Perfil;
 import com.adson.aplimc.domain.enums.TipoCliente;
 import com.adson.aplimc.dto.ClienteDTO;
 import com.adson.aplimc.dto.ClienteNewDTO;
 import com.adson.aplimc.repositories.ClienteRepository;
 import com.adson.aplimc.repositories.EnderecoRepository;
+import com.adson.aplimc.security.UserSS;
+import com.adson.aplimc.services.exceptions.AuthorizationException;
 import com.adson.aplimc.services.exceptions.DateIntegrityException;
 import com.adson.aplimc.services.exceptions.ObjectNotFoundException;
 
@@ -35,6 +38,12 @@ public class ClienteService {
 	private EnderecoRepository enderecoRepository;
 
 	public Cliente find(Integer id) {
+		
+		UserSS user = UserService.authenticated();
+		if (user == null || !user.hasRole(Perfil.ADMIN) && !id.equals(user.getId())) {
+			throw new AuthorizationException("Acesso neagdo");
+		}
+		
 		Optional<Cliente> obj = repo.findById(id);
 		return obj.orElseThrow(() -> new ObjectNotFoundException(
 				"Objeto não encontrado! Id: " + id + ", Tipo: " + Cliente.class.getName()));
