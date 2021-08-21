@@ -29,7 +29,7 @@ public class Pedido implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 
-	@JsonFormat(pattern = "dd/MM/yyyy HH:mm")
+	@JsonFormat(pattern = "dd/MM/yyyy hh:mm")
 	private Date instant;
 
 	@OneToOne(cascade = CascadeType.ALL, mappedBy = "pedido")
@@ -150,6 +150,6 @@ public class Pedido implements Serializable {
 		builder.append("Valor total: ");
 		builder.append(nf.format(getValorTotal()));
 		return builder.toString();
-	}
+		}
 
 }
