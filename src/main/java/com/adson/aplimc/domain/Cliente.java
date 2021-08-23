@@ -55,6 +55,7 @@ public class Cliente implements Serializable {
 	@OneToMany(mappedBy = "cliente")
 	private List<Pedido> pedidos = new ArrayList<Pedido>();
 	
+	
 	public Cliente() {
 		addPerfil(Perfil.CLIENTE);
 	}
@@ -166,6 +167,4 @@ public class Cliente implements Serializable {
 		Cliente other = (Cliente) obj;
 		return Objects.equals(id, other.id);
 	}
-
-
 }
