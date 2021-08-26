@@ -2,6 +2,7 @@ package com.adson.aplimc.config;
 
 import java.util.Arrays;
 
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -26,39 +27,38 @@ import com.adson.aplimc.security.JWTUtil;
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
-public class SegurityConfig extends WebSecurityConfigurerAdapter {
-	
+public class SecurityConfig extends WebSecurityConfigurerAdapter {
+
 	@Autowired
 	private UserDetailsService userDetailsService;
 	
 	@Autowired
-	private Environment env;
+    private Environment env;
 	
 	@Autowired
 	private JWTUtil jwtUtil;
 	
 	private static final String[] PUBLIC_MATCHERS = {
-		"/h2-console/**",
+			"/h2-console/**"
 	};
-	
+
 	private static final String[] PUBLIC_MATCHERS_GET = {
 			"/produtos/**",
 			"/categorias/**",
 			"/estados/**"
-		};
-	
+	};
+
 	private static final String[] PUBLIC_MATCHERS_POST = {
-			"/clientes",
-			"auth/forgot/**"
-			
-		};
-	
+			"/clientes/**",
+			"/auth/forgot/**"
+	};
+
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		
 		if (Arrays.asList(env.getActiveProfiles()).contains("test")) {
-			http.headers().frameOptions().disable();
-		}
+            http.headers().frameOptions().disable();
+        }
 		
 		http.cors().and().csrf().disable();
 		http.authorizeRequests()
@@ -76,18 +76,17 @@ public class SegurityConfig extends WebSecurityConfigurerAdapter {
 		auth.userDetailsService(userDetailsService).passwordEncoder(bCryptPasswordEncoder());
 	}
 	
-	
 	@Bean
 	CorsConfigurationSource corsConfigurationSource() {
+		CorsConfiguration configuration = new CorsConfiguration().applyPermitDefaultValues();
+		configuration.setAllowedMethods(Arrays.asList("POST", "GET", "PUT", "DELETE", "OPTIONS"));
 		final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-		source.registerCorsConfiguration("/**", new CorsConfiguration().applyPermitDefaultValues());
+		source.registerCorsConfiguration("/**", configuration);
 		return source;
 	}
-	
 	
 	@Bean
 	public BCryptPasswordEncoder bCryptPasswordEncoder() {
 		return new BCryptPasswordEncoder();
 	}
-		
 }

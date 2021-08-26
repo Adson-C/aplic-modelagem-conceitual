@@ -2,6 +2,7 @@ package com.adson.aplimc.resources.exception;
 
 import java.io.Serializable;
 
+
 public class StandardErrror implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
